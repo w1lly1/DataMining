@@ -24,8 +24,8 @@ def dataset_preparation():
 
     try:
         file_data = pd.read_csv(file_data_path, encoding='latin-1')
-        print(f"[{TIME_FRAME}] dataset_preparation(): check first five lines")
-        print(file_data.head())
+        # print(f"[{TIME_FRAME}] dataset_preparation(): check first five lines")
+        # print(file_data.head())
         return file_data
     except Exception as e:
         print(f"[{TIME_FRAME}] dataset_preparation(): Error reading CSV file: {e}")
