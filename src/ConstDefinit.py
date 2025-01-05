@@ -30,7 +30,7 @@ FEAT_CHINESE_CHARACTER = [
     '酸碱度(2.9 - 3.9)',
     '硫酸盐(g/L)',
     '酒精(% vol)',
-    '酸性变量指标总和'
+    # '酸性变量指标总和'
 ]
 
 ACIDITY_FEAT = {

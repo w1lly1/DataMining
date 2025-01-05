@@ -1,3 +1,4 @@
+import shutil
 from ConstDefinit import (
     TIME_FRAME,
     COLUMN_MAPPING
@@ -55,3 +56,23 @@ def data_cleanUp(file_data):
     num_data_entries_after_filter = len(new_file_data)
     print(f"[{TIME_FRAME}] dataMining(): number of data entries that has been removed is: {num_data_entries_before_filter - num_data_entries_after_filter}")
     return new_file_data
+
+import os
+from DataDownload import dataset_preparation
+from DataCleanUp import data_cleanUp, data_validation
+from DataVisualization import build_Histograms_and_BoxPlots, data_feature_anlysis, key_feature_analysis
+from ConstDefinit import (
+    TIME_FRAME
+)
+
+def clear_visualization_results():
+    output_directory = 'visualizationResult'
+    for filename in os.listdir(output_directory):
+        file_path = os.path.join(output_directory, filename)
+        try:
+            if os.path.isfile(file_path) or os.path.islink(file_path):
+                os.unlink(file_path)
+            elif os.path.isdir(file_path):
+                shutil.rmtree(file_path)
+        except Exception as e:
+            print(f'Failed to delete {file_path}. Reason: {e}')

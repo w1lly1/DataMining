@@ -1,5 +1,4 @@
 import os
-import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 import seaborn as sns
@@ -68,14 +67,25 @@ def build_Histograms_and_BoxPlots(file_data, file_suffix=""):
     print(f"[{TIME_FRAME}] dataVisualization(): End")
 
 
+def data_feature_anlysis(file_data):
+    print(f"[{TIME_FRAME}] data_anlysis(): Start")
+
+    feature_influence_to_quality_visualize(file_data, "feature_influence_to_quality")
+
+    # multi_feature_analysis(file_data)
+
+    print(f"[{TIME_FRAME}] data_anlysis(): End")
+    return file_data
+
+
 def feature_influence_to_quality_visualize(file_data, file_suffix=""):
-    file_data['酸性变量指标总和'] = file_data['固定酸度(g/L)'] + file_data['挥发性酸度(g/L)'] + file_data['柠檬酸(g/L)']
+    # file_data['酸性变量指标总和'] = file_data['固定酸度(g/L)'] + file_data['挥发性酸度(g/L)'] + file_data['柠檬酸(g/L)']
 
     sns.set_style('ticks')
     sns.set_context('notebook',font_scale = 1.1)
 
     plt.figure(figsize = (8, 12))
-    for i in range(12):
+    for i in range(11):
         plt.subplot(4, 3, i+1)
         plt.rcParams['font.sans-serif'] = ['SimHei']
         plt.rcParams['axes.unicode_minus'] = False
@@ -86,3 +96,36 @@ def feature_influence_to_quality_visualize(file_data, file_suffix=""):
     file_name = f'histograms_{file_suffix}.png'
     output_path = build_output_path(file_name)
     plt.savefig(output_path)
+
+
+def key_feature_analysis(file_data):
+    print(f"[{TIME_FRAME}] key_feature_analysis(): Start")
+
+    key_feature_influence_to_quality_visualize(file_data)
+
+    print(f"[{TIME_FRAME}] key_feature_analysis(): End")
+
+
+def scatter_plot_visualize(file_data, x_feat, y_feat, file_suffix=""):
+    print(f"[{TIME_FRAME}] scatter_plot_visualize(): Start")
+    plt.style.use('ggplot')
+
+    plt.figure(figsize = (6,4))
+    sns.lmplot(x = x_feat, y = y_feat, hue = '质量(1 - 10)', data = file_data, fit_reg = False, scatter_kws = {'s':10})
+    file_name = f'scatter_plot_{file_suffix}.png'
+    output_path = build_output_path(file_name)
+    plt.savefig(output_path)
+
+def key_feature_influence_to_quality_visualize(file_data):
+    print(f"[{TIME_FRAME}] key_feature_influence_to_quality_visualize(): Start")
+
+    # 正负相关参数与质量的散点图
+    scatter_plot_visualize(file_data, '固定酸度(g/L)', '柠檬酸(g/L)', "fixed_acidity_and_citric_acid")
+    scatter_plot_visualize(file_data, '硫酸盐(g/L)', '挥发性酸度(g/L)', "sulphates_and_volatile_acid")
+
+    # 据图，可知固定酸度在8~12， 柠檬酸浓度在0.3~0.7，挥发性酸度在0.2~0.6，硫酸盐浓度在0.6~1.0之间的红酒质量较好
+
+    print(f"[{TIME_FRAME}] key_feature_influence_to_quality_visualize(): End")
+    return file_data
+
+
